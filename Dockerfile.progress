@@ -1,0 +1,4 @@
+FROM sissbruecker/linkding:1.47.0-plus@sha256:1ba3d9ebb8be8944f771acd9bdf75d3a5d192e1fca779fe005a02fe2b798958a
+COPY bookmarks/models.py /etc/linkding/bookmarks/models.py
+COPY bookmarks/api/routes.py bookmarks/api/reading_progress.py /etc/linkding/bookmarks/api/
+COPY bookmarks/migrations/0055_reading_progress.py /etc/linkding/bookmarks/migrations/

@@ -81,6 +81,11 @@ class BookmarkViewSet(
             "disable_html_snapshot": disable_html_snapshot,
         }
 
+    @action(methods=["get", "put"], detail=True, url_path="reading-progress")
+    def reading_progress(self, request, pk):
+        from bookmarks.api.reading_progress import reading_progress
+        return reading_progress(request, self.get_object())
+
     @action(methods=["get"], detail=False)
     def archived(self, request: HttpRequest):
         return self.list(request)

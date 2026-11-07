@@ -569,3 +569,11 @@ class GlobalSettings(models.Model):
         if not self.pk and GlobalSettings.objects.exists():
             raise Exception("There is already one instance of GlobalSettings")
         return super().save(*args, **kwargs)
+
+
+class ReadingProgress(models.Model):
+    """Private reader state; does not modify bookmark metadata or unread status."""
+    bookmark = models.OneToOneField(Bookmark, on_delete=models.CASCADE)
+    url = models.CharField(max_length=2048)
+    revision = models.PositiveBigIntegerField(default=0)
+    position = models.JSONField(default=dict)
