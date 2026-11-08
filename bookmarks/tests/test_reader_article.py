@@ -1,4 +1,5 @@
 import base64
+import hashlib
 import io
 from unittest.mock import patch
 
@@ -24,7 +25,7 @@ class SharedReaderTests(LinkdingApiTestCase, BookmarkFactoryMixin):
 
     def test_shared_article_has_stable_anchors_and_no_publisher_code(self):
         text = (
-            "A substantial paragraph about reading articles together across devices. "
+            "A substantial paragraph about reading articles together across devices — résumé 🦉. "
             * 15
         )
         source = (
@@ -42,9 +43,10 @@ class SharedReaderTests(LinkdingApiTestCase, BookmarkFactoryMixin):
         )
         with patch(
             "bookmarks.services.reader_article.source_for",
-            return_value=(source, "test-source"),
+            return_value=(source, hashlib.sha256(source.encode()).hexdigest()),
         ):
-            article = canonical_article(self.bookmark)
+            with patch("locale.getencoding", return_value="ascii"):
+                article = canonical_article(self.bookmark)
             again = canonical_article(self.bookmark)
         self.assertEqual(article, again)
         self.assertIn("passage-", article["html"])

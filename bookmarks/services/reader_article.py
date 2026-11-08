@@ -124,6 +124,7 @@ def canonical_article(bookmark):
         ["node", str(runtime)],
         input=json.dumps({"html": source, "url": bookmark.url}),
         text=True,
+        encoding="utf-8",
         capture_output=True,
         timeout=15,
         check=True,
