@@ -81,9 +81,26 @@ class BookmarkViewSet(
             "disable_html_snapshot": disable_html_snapshot,
         }
 
+    @action(methods=["get"], detail=True, url_path="reader-article")
+    def reader_article(self, request, pk):
+        from bookmarks.services.reader_article import canonical_article
+
+        bookmark = self.get_object()
+        try:
+            return Response(canonical_article(bookmark))
+        except Exception:
+            logger.exception("Reader preparation failed for bookmark %s", bookmark.pk)
+            return Response(
+                {
+                    "error": "Article is unavailable; save a captured copy or retry later."
+                },
+                status=503,
+            )
+
     @action(methods=["get", "put"], detail=True, url_path="reading-progress")
     def reading_progress(self, request, pk):
         from bookmarks.api.reading_progress import reading_progress
+
         return reading_progress(request, self.get_object())
 
     @action(methods=["get"], detail=False)

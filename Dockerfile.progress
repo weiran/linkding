@@ -2,3 +2,7 @@ FROM sissbruecker/linkding:1.47.0-plus@sha256:1ba3d9ebb8be8944f771acd9bdf75d3a5d
 COPY bookmarks/models.py /etc/linkding/bookmarks/models.py
 COPY bookmarks/api/routes.py bookmarks/api/reading_progress.py /etc/linkding/bookmarks/api/
 COPY bookmarks/migrations/0055_reading_progress.py /etc/linkding/bookmarks/migrations/
+
+COPY reader-runtime /etc/linkding/reader-runtime
+RUN cd /etc/linkding/reader-runtime && npm ci --omit=dev && /etc/linkding/.venv/bin/python -m ensurepip && /etc/linkding/.venv/bin/python -m pip install --no-cache-dir Pillow==12.0.0
+COPY bookmarks/services/reader_article.py /etc/linkding/bookmarks/services/

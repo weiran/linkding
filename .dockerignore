@@ -19,3 +19,6 @@
 
  # Remove dev settings
 /bookmarks/settings/dev.py
+
+!/reader-runtime
+/reader-runtime/node_modules
